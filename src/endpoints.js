@@ -22,7 +22,13 @@ const storage = multer.diskStorage({
       cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname));
+     
+      const timestamp = Date.now(); // Current timestamp
+      const randomNumber = Math.floor(1000 + Math.random() * 9000); // Random 4-digit number
+      const newFilename = `${timestamp}${randomNumber}${path.extname(file.originalname)}`;
+      cb(null, newFilename);
+
+    
     },
   });
   const upload = multer({ storage });
@@ -34,7 +40,10 @@ const storage = multer.diskStorage({
       cb(null, 'images/PropertyPhoto');
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname));
+      const timestamp = Date.now(); // Current timestamp
+      const randomNumber = Math.floor(1000 + Math.random() * 9000); // Random 4-digit number
+      const newFilename = `${timestamp}${randomNumber}${path.extname(file.originalname)}`;
+      cb(null, newFilename);
     },
   });
   
@@ -44,9 +53,15 @@ const storage = multer.diskStorage({
 
 
 
-// Define your endpoints using the Router
+// Static images start
 router.get('/', (req, res) => {
   res.send('Image server');
+});
+
+router.get('/Images/FrontPageImage', (req, res) => {
+  const imagePath = path.join(__dirname, '..', 'Images', 'FrontPageImage.jpg');
+// Send the image file as a response
+res.sendFile(imagePath);
 });
 
 
@@ -63,6 +78,15 @@ router.get('/Images/NotFound', (req, res) => {
   res.sendFile(imagePath);
   });
 
+  router.get('/Images/HousePlaceHolder', (req, res) => {
+    const imagePath = path.join(__dirname, '..', 'Images', 'HousePlaceHolder.png');
+  // Send the image file as a response
+  res.sendFile(imagePath);
+  });
+
+
+
+  // Static images end
 
 router.get('/Images/ProfilePic/:imageName', (req, res) =>{
     const { imageName } = req.params;
@@ -130,7 +154,7 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
   
     if (!imageUrl) 
     {
-      return res.status(400).send('No image URL provided');
+      return res.status(200).send('No image URL provided');
     }
   
     try 
@@ -172,7 +196,7 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
   
     if (!imageUrl) 
     {
-      return res.status(400).send('No image URL provided');
+      return res.status(200).send('No image URL provided');
     }
   
     try 
@@ -203,7 +227,7 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
       if (err) {
         // Handle multer error
         console.log(err);
-        return res.status(400).send('Error uploading files');
+        return res.status(500).send('Error uploading files');
       }
   
       try 
