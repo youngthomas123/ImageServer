@@ -164,6 +164,8 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
       const imagePath = path.join(__dirname, '..', 'Images/ProfilePic', filename);
   
       // Attempt to delete the image based on the constructed path
+      console.log("deleating profile pic :  ");
+      console.log(imageUrl);
       await logic.deleteImageIfExists(imagePath);
       res.status(200).send('Image deleted successfully');
     } 
@@ -206,6 +208,8 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
       const imagePath = path.join(__dirname, '..', 'Images/MainPropertyPic', filename);
   
       // Attempt to delete the image based on the constructed path
+      console.log("deleating main property picture :  ");
+      console.log(imageUrl);
       await logic.deleteImageIfExists(imagePath);
       res.status(200).send('Image deleted successfully');
     } 
@@ -256,6 +260,8 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
         console.log(imageUrls)
         return res.status(400).send('Invalid image URLs provided');
       }
+      console.log("deleating these photos :  ")
+      console.log(imageUrls);
   
       const imageDeletionPromises = imageUrls.map(async (url) => {
         // Extract filename from the URL to construct the path for deletion
@@ -263,6 +269,7 @@ router.post('/upload/ProfilePic', upload.single('image'), async (req, res) => {
         const imagePath = path.join(__dirname, '..', 'Images/PropertyPhoto', filename);
   
         // Perform deletion logic for each URL provided
+        
         await logic.deleteImageIfExists(imagePath);
       });
   
